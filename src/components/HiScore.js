@@ -1,7 +1,7 @@
 import React from 'react'
 
-export default function HiScore() {
+export default function HiScore(props) {
     return (
-        <div>High Score: 'prop'</div>
+        <div>High Score: {props.hiScore}</div>
     )
 }

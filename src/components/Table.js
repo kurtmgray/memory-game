@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import Card from './Card'
+import Header from './Header'
 import uniqid from 'uniqid'
 
 export default function Table() {
@@ -80,25 +81,43 @@ export default function Table() {
     ])
     
     const shuffleCharacters = () => {
-        console.log('shuffle')
+        setCharacters(prevState => {
+            let currentIndex = prevState.length; 
+            let randomIndex, temp
+            console.log(prevState)
+            while (currentIndex !== 0) {
+                randomIndex = Math.floor(Math.random() * currentIndex--);
+                temp = prevState[currentIndex]
+                prevState[currentIndex] = prevState[randomIndex]
+                prevState[randomIndex] = temp
+            }
+            return prevState;
+        })
     }
 
     const checkWin = () => {
-        // if all characters are checked, game is won
+        let win = characters.every(c => c.isClicked === true)
+        console.log(win)
     }
 
-    const checkLose = () => {
-        // if clicked character isClicked, game over, shuffle, restart
+    const checkLose = (event) => {
+        // if clicked character isClicked, display game over, then options to shuffle/reset scores/restart
     }
 
     const setScores = () => {
-        // increments score on every false=>true click (in the handleClick map()?)
-        // if score = hiScore, increment hiScore as well
+        setScore(() => {
+            const newScore = characters.filter(character => 
+                character.isClicked ? true : false
+            ).length
+            return newScore
+        })
+        setHiScore(prevState => 
+            // not the correct condition (should be ===), but need to figure out async click/update
+            prevState <= score ? prevState = score : prevState
+        )    
     }
 
-    const handleClick = (event) => {
-        shuffleCharacters()
-        console.log(event.target.id)
+    const markClicked = (event) => {
         setCharacters(prevState => {
             const newCharItem = prevState.map(item => {
                 if(item.id === event.target.id) {
@@ -107,7 +126,16 @@ export default function Table() {
                 return {...item}
             })
             return newCharItem
-        })         
+        })
+    }
+
+    // is this ok?
+    const handleClick = (event) => {
+        markClicked(event)
+        checkLose()
+        shuffleCharacters()
+        setScores()
+        checkWin()
     }
 
     const characterCards = characters.map((character) => {
@@ -122,12 +150,20 @@ export default function Table() {
             /> 
         )
     })
-    
+    // want header to be sibling of Table... in here now for working purposes.
+    // do I need to move all of state up to App (parent)?
     return (
         <div>
-            {JSON.stringify(characters)}
-            {characterCards}
+            <Header 
+                score={score}
+                hiScore={hiScore}
+            />
 
+            <div>{JSON.stringify(characters)}</div>
+
+
+            {characterCards}
+            
         </div>
     )
 }
