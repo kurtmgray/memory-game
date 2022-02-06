@@ -6,8 +6,7 @@ import characters from './data/characters'
 
 export default function App() {
 
-const [score, setScore] = useState(0)
-const [hiScore, setHiScore] = useState(0)
+const [[score, hiScore], setScores] = useState([0,0])
 const [clicked, setClicked] = useState([])
 const [winLose, setWinLose] = useState(null)
 const [characterOrder, setOrder] = useState(
@@ -38,11 +37,13 @@ const checkGameOver = (id) => {
   } else return null
 }
 
-const setScores = () => {
-  const oldHigh = hiScore
-  setScore(prevScore => prevScore + 1)
-  setHiScore(prevHi => oldHigh === score ? prevHi + 1 : prevHi)    
-}
+const handleScores = () => {
+  setScores(([prevScore, prevHiScore]) => {
+    const newScore = prevScore + 1
+    const newHiScore = newScore > prevHiScore ? newScore : prevHiScore
+    return [newScore, newHiScore]
+  })
+}  
 
 const addCardToClicked = (id) => {
   setClicked(prevState => {
@@ -59,17 +60,14 @@ const addCardToClicked = (id) => {
 const handleClick = (id) => {
   setWinLose(null)
   let result = checkGameOver(id)
-  if (result !== null) {
-    setWinLose(result)
-  }
   if(result){
     setWinLose(result)
-    setScore(0)
+    setScores(([prevScore, prevHiScore]) => [0, prevHiScore])
     setClicked([])
     return   
   } else {
     addCardToClicked(id)
-    setScores()
+    handleScores()
   }
   shuffleOrder()
 }
