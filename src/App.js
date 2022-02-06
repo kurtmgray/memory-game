@@ -36,8 +36,6 @@ const shuffleOrder = () => {
 const checkGameOver = (id) => {
   const win = score === characters.length
   const lose = clicked.includes(id)
-  console.log('win:', win, clicked.length)
-  console.log('lose:', lose, clicked)
   if (win) {
     return 'win'
   } else if (lose) {
@@ -71,17 +69,15 @@ const handleClick = (id) => {
   }
   if(result){
     setWinLose(result)
-    console.log(`You ${result}!`)
     setScore(0)
-    setClicked([])   
+    setClicked([])
+    return   
   } else {
     addCardToClicked(id)
     setScores()
   }
   shuffleOrder()
 }
-
-console.log('score:',score,'hiScore:', hiScore)
 
   return (
     <div>
