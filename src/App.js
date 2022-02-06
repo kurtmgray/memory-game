@@ -19,18 +19,18 @@ const [characterOrder, setOrder] = useState(
 let result
 
 const shuffleOrder = () => {
-    setOrder(prevState => {
-        const newState = [...prevState]
-        let currentIndex = newState.length; 
-        let randomIndex, temp
-        while (currentIndex !== 0) {
-            randomIndex = Math.floor(Math.random() * currentIndex--);
-            temp = newState[currentIndex]
-            newState[currentIndex] = newState[randomIndex]
-            newState[randomIndex] = temp
-        }
-        return newState; 
-    })
+  setOrder(prevState => {
+    const newState = [...prevState]
+    let currentIndex = newState.length; 
+    let randomIndex, temp
+    while (currentIndex !== 0) {
+        randomIndex = Math.floor(Math.random() * currentIndex--);
+        temp = newState[currentIndex]
+        newState[currentIndex] = newState[randomIndex]
+        newState[randomIndex] = temp
+    }
+    return newState; 
+  })
 }
 
 const checkGameOver = (id) => {
@@ -44,21 +44,21 @@ const checkGameOver = (id) => {
 }
 
 const setScores = () => {
-    const oldHigh = hiScore
-    setScore(prevScore => prevScore + 1)
-    setHiScore(prevHi => oldHigh === score ? prevHi + 1 : prevHi)    
+  const oldHigh = hiScore
+  setScore(prevScore => prevScore + 1)
+  setHiScore(prevHi => oldHigh === score ? prevHi + 1 : prevHi)    
 }
 
 const addCardToClicked = (id) => {
-    setClicked(prevState => {
-        const newState = [...prevState]
-        if (prevState.includes(id)) {
-          return prevState
-        } else {
-          newState.push(id)
-          return newState
-        }  
-    })
+  setClicked(prevState => {
+    const newState = [...prevState]
+    if (prevState.includes(id)) {
+      return prevState
+    } else {
+      newState.push(id)
+      return newState
+    }  
+  })
 }
 
 const handleClick = (id) => {
