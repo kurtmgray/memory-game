@@ -13,11 +13,6 @@ const [winLose, setWinLose] = useState(null)
 const [characterOrder, setOrder] = useState(
     characters.map(c => c.id))
 
-// originally had this in state, but it gave my async problems
-// is ok to declare outside of state this way?
-// defined in handleClick    
-let result
-
 const shuffleOrder = () => {
   setOrder(prevState => {
     const newState = [...prevState]
@@ -63,7 +58,7 @@ const addCardToClicked = (id) => {
 
 const handleClick = (id) => {
   setWinLose(null)
-  result = checkGameOver(id)
+  let result = checkGameOver(id)
   if (result !== null) {
     setWinLose(result)
   }
@@ -96,16 +91,3 @@ const handleClick = (id) => {
     </div>
   );
 }
-
-// flow:
-//   new game:
-//      shuffle card order
-//      reset score
-//   on card click
-//      check if the card has been clicked (in clicked array)
-//      yes?
-//          game over
-//      no?
-//          increment score, high score if needed
-//          add card id into clicked array
-
